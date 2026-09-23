@@ -59,8 +59,6 @@ class HualienAdventure {
     // 故事展示區
     this.sceneTitle = document.getElementById('scene-title');
     this.storyText = document.getElementById('story-text');
-    this.wordCountBadge = document.getElementById('word-count-badge');
-    this.wordCountNum = document.getElementById('word-count-num');
     this.rewardNotification = document.getElementById('reward-notification');
     this.choicesContainer = document.getElementById('choices-container');
 
@@ -120,13 +118,6 @@ class HualienAdventure {
     this.restartBtn.addEventListener('click', () => {
       if (confirm('確定要回到起點，重新選擇旅程主軸嗎？當前進度將重置。')) {
         this.resetGame();
-      }
-    });
-
-    // 點擊文本跳過打字機效果
-    this.storyText.addEventListener('click', () => {
-      if (this.isTyping) {
-        this.skipTypewriter();
       }
     });
   }
@@ -263,17 +254,6 @@ class HualienAdventure {
     // 場景標題
     this.sceneTitle.textContent = node.title;
 
-    // 計算字數 (排除換行與多餘空白)
-    const pureText = node.text.replace(/\s+/g, '');
-    const charLen = pureText.length;
-    this.wordCountNum.textContent = `${charLen} 字`;
-    if (charLen >= 200 && charLen <= 300) {
-      this.wordCountBadge.className = 'word-count-badge in-range';
-      this.wordCountBadge.title = '情境長度嚴格符合 200-300 字規範';
-    } else {
-      this.wordCountBadge.className = 'word-count-badge out-of-range';
-    }
-
     // 檢查是否有獲得新道具/名產
     let hasNewItem = false;
     if (node.item) {
@@ -303,48 +283,9 @@ class HualienAdventure {
       scrollArea.scrollTop = 0;
     }
 
-    // 打字機播放故事文本
-    this.playTypewriter(node.text, () => {
-      this.renderChoices(node.choices);
-    });
-  }
-
-  playTypewriter(text, onComplete) {
-    if (this.typewriterTimer) {
-      clearInterval(this.typewriterTimer);
-    }
-
-    this.isTyping = true;
-    this.currentText = text;
-    this.storyText.innerHTML = '';
-    this.choicesContainer.innerHTML = '';
-    this.choicesContainer.style.opacity = '0';
-
-    let index = 0;
-    const speed = 16; // 每字 16ms，約 3~4 秒打完，流暢沉浸
-
-    this.typewriterTimer = setInterval(() => {
-      if (index < text.length) {
-        this.storyText.textContent += text[index];
-        index++;
-      } else {
-        clearInterval(this.typewriterTimer);
-        this.isTyping = false;
-        if (onComplete) onComplete();
-      }
-    }, speed);
-  }
-
-  skipTypewriter() {
-    if (!this.isTyping) return;
-    clearInterval(this.typewriterTimer);
-    this.isTyping = false;
-    this.storyText.textContent = this.currentText;
-    const currentBranch = STORY_DATA[this.currentMode];
-    const node = currentBranch.nodes[this.currentNodeId];
-    if (node) {
-      this.renderChoices(node.choices);
-    }
+    // 文字區塊直接呈現，無逐一產字過程
+    this.storyText.textContent = node.text;
+    this.renderChoices(node.choices);
   }
 
   renderChoices(choices) {
