@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>洄瀾風語：花蓮奇境探索之旅 | 第一人稱沉浸式互動遊戲</title>
+  <meta name="description" content="以花蓮特有風景、在地美食、風土名產為故事線索，每次 200-300 字情境並附 3 個選項的第一人稱沉浸式探索旅程。">
+  <meta name="theme-color" content="#0e2038">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div id="app-container">
+
+    <!-- ==================== 1. 入口身分選擇畫面 ==================== -->
+    <section id="welcome-screen" class="screen active">
+      <div class="welcome-badge">✦ 第一人稱 · 沉浸探索遊戲 ✦</div>
+      <h1 class="game-title">洄瀾風語<br>花蓮奇境探索之旅</h1>
+      <p class="game-subtitle">
+        山海相擁的東台灣大地，每一陣太平洋風、每一塊大理石紋、每一道出爐熱氣，都藏著等待你揭開的故事線索。
+      </p>
+
+      <div class="role-selection-title">
+        <span>請選擇您本次踏上花蓮的身分主軸</span>
+      </div>
+
+      <div class="role-cards-container">
+        <!-- 選項 A：初次到訪 -->
+        <div class="role-card" data-mode="first_time">
+          <div class="role-icon">🔰</div>
+          <h2 class="role-title">初次到訪</h2>
+          <div class="role-tagline">初見驚艷 · 探索新奇</div>
+          <p class="role-desc">
+            帶著未曾踏足的憧憬，初識洄瀾的磅礡氣勢。太魯閣峭壁天光、七星潭月牙碎浪、市區排隊炸蛋蔥油餅與伴手禮老街的焦甜香，等待著你的第一本空白手帳。
+          </p>
+          <div class="role-features">
+            <span class="feature-pill">太魯閣峽谷</span>
+            <span class="feature-pill">七星潭浪花</span>
+            <span class="feature-pill">花蓮薯麻糬</span>
+            <span class="feature-pill">剝皮辣椒</span>
+          </div>
+          <button class="role-card-btn">
+            <span>開始初見之旅</span>
+            <span>➔</span>
+          </button>
+        </div>
+
+        <!-- 選項 B：曾經到訪 -->
+        <div class="role-card" data-mode="returning">
+          <div class="role-icon">🧭</div>
+          <h2 class="role-title">曾經到訪</h2>
+          <div class="role-tagline">舊地重遊 · 秘境拾遺</div>
+          <p class="role-desc">
+            避開喧囂人潮，循著老松濤、白鮑溪清冽溪流中的豐田玉原石、鳳林慢城日式菸樓、林田山檜木沉香與部落石頭火鍋，探尋花蓮靈魂深處的厚實溫度。
+          </p>
+          <div class="role-features">
+            <span class="feature-pill">松園老松濤</span>
+            <span class="feature-pill">白鮑溪豐田玉</span>
+            <span class="feature-pill">蜜香紅茶</span>
+            <span class="feature-pill">部落香蕉絲</span>
+          </div>
+          <button class="role-card-btn">
+            <span>開啟重遊秘境</span>
+            <span>➔</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="welcome-content">
+        <!-- 若有本機存檔，將由 game.js 動態注入繼續按鈕 -->
+      </div>
+    </section>
+
+    <!-- ==================== 2. 沉浸式遊戲進行畫面 ==================== -->
+    <section id="game-screen" class="screen">
+      
+      <!-- 頂部資訊列 -->
+      <header class="game-header">
+        <div class="header-left">
+          <span id="mode-badge" class="badge-mode">初見驚艷 · 探索新奇</span>
+          <span id="location-badge" class="badge-loc">📍 花蓮市 · 站前廣場</span>
+        </div>
+
+        <div class="header-actions">
+          <button id="sound-toggle-btn" class="tool-btn" title="切換自然山海海浪氛圍音">
+            <span class="icon">🔇</span>
+            <span class="btn-text">音效 (靜音)</span>
+          </button>
+          <button id="bag-btn" class="tool-btn" title="查看收集到的名產與線索">
+            <span class="icon">🎒</span>
+            <span class="btn-text">洄瀾行囊</span>
+            <span id="bag-count-badge" class="bag-count" style="display:none;">0</span>
+          </button>
+          <button id="map-btn" class="tool-btn" title="查看花蓮鄉鎮足跡圖鑑">
+            <span class="icon">🗺️</span>
+            <span class="btn-text">足跡地圖</span>
+          </button>
+          <button id="back-btn" class="tool-btn" title="回溯上一步抉擇" disabled>
+            <span class="icon">↩️</span>
+            <span class="btn-text">回溯</span>
+          </button>
+          <button id="restart-btn" class="tool-btn" title="返回起點重新開始">
+            <span class="icon">🔄</span>
+            <span class="btn-text">重選</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 故事閱讀內容區 -->
+      <main class="story-scroll-area">
+        <div class="scene-header-row">
+          <h2 id="scene-title" class="scene-title">洄瀾初遇：花蓮驛前</h2>
+          <div id="word-count-badge" class="word-count-badge in-range" title="情境長度嚴格符合 200-300 字規範">
+            <span>📝 情境：</span>
+            <span id="word-count-num">219 字</span>
+            <span>(✓ 200-300字)</span>
+          </div>
+        </div>
+
+        <!-- 道具獎勵通知卡 -->
+        <div id="reward-notification" class="reward-banner"></div>
+
+        <!-- 核心故事情境文字卡片 -->
+        <article class="story-card" title="點擊可立即跳過文字播放">
+          <p id="story-text" class="story-text"></p>
+          <span class="skip-hint">✦ 點擊文字區塊可加速顯示全文</span>
+        </article>
+      </main>
+
+      <!-- 文末 3 個抉擇選項 -->
+      <footer class="choices-section">
+        <div class="choices-heading">
+          <span>👣 你的下一步決定：</span>
+        </div>
+        <div id="choices-container" class="choices-container">
+          <!-- 3 個互動選項按鈕由 JavaScript 動態生成 -->
+        </div>
+      </footer>
+
+    </section>
+
+  </div>
+
+  <!-- ==================== 彈窗 1：洄瀾行囊與名產圖鑑 ==================== -->
+  <div id="inventory-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><span>🎒</span> 洄瀾行囊 · 風土與特產收藏</h3>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="inventory-list" class="inventory-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 彈窗 2：花蓮十鄉鎮足跡地圖 ==================== -->
+  <div id="map-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><span>🗺️</span> 花蓮山海足跡地圖</h3>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.88rem; color: #5c6773; margin-bottom: 16px;">
+          隨著你的抉擇，足跡將逐步解鎖花蓮縱谷與海岸鄉鎮的風土印記：
+        </p>
+        <div id="map-grid" class="map-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 載入腳本 -->
+  <script src="js/storyData.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
